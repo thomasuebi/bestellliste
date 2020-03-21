@@ -1,0 +1,44 @@
+.section {
+  display: inline-block;
+  width: 700px;
+  max-width: 80%;
+}
+
+.inputSectionName,
+.inputProductName,
+.inputProductPrice {
+  border: none;
+  background-color: transparent;
+  transition: 0.3s;
+  border-radius: 3px;
+  padding: 5px;
+  cursor: text;
+  display: block;
+  min-width: 60%;
+  font-size: 18px;
+}
+
+.inputSectionName {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.inputProduct {
+  display: flex;
+}
+
+.inputProduct:focus,
+.inputProduct:active,
+.inputProduct:hover,
+.inputProductPrice:focus,
+.inputProductPrice:active,
+.inputProductPrice:hover,
+.inputProductName:focus,
+.inputProductName:active,
+.inputProductName:hover,
+.inputSectionName:focus,
+.inputSectionName:active,
+.inputSectionName:hover {
+  outline: none;
+  background-color: rgba(63, 81, 181, 0.04);
+}

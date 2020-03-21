@@ -1,0 +1,39 @@
+ot {
+  height: 100vh;
+  overflow-y: hidden;
+}
+
+.scroll {
+  height: calc(100vh - 56px);
+  overflow-y: scroll;
+}
+
+.AppBar {
+  background-color: white;
+  color: black;
+  justify-content: space-between;
+  padding-right: 4px !important;
+}
+
+.GridList {
+  border: solid 1px black;
+}
+
+.highlight {
+  height: 120px;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+}
+
+.flex .highlight {
+  width: 49%;
+}
+
+.logo {
+  font-weight: 900;
+}
