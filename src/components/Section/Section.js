@@ -46,6 +46,7 @@ export default function(props) {
                 type='text'
                 placeholder='Unbenanntes Produkt'
               />
+              <span className={styles.inputProductCurrency}>€</span>
               <input
                 key={"section" + sectionIndex + "productprice" + index}
                 onBlur={event => {

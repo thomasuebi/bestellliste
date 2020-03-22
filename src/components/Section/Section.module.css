@@ -1,11 +1,12 @@
 .section {
   display: inline-block;
   width: 700px;
-  max-width: 80%;
+  max-width: 88%;
 }
 
 .inputSectionName,
 .inputProductName,
+.inputProductCurrency,
 .inputProductPrice {
   border: none;
   background-color: transparent;
@@ -14,17 +15,24 @@
   padding: 5px;
   cursor: text;
   display: block;
-  min-width: 60%;
   font-size: 18px;
 }
 
 .inputSectionName {
   font-size: 22px;
   font-weight: 700;
+  min-width: 60%;
 }
 
 .inputProduct {
   display: flex;
+}
+
+.inputProductName {
+  min-width: 60%;
+}
+.inputProductPrice {
+  max-width: 60px;
 }
 
 .inputProduct:focus,

@@ -45,16 +45,8 @@ export default function(props) {
         ? doc.data().data
         : [
             {
-              name: "Klopapier",
-              products: [{ name: "Extra Soft", price: "3.90" }]
-            },
-            {
-              name: "Pizzen",
-              products: [
-                { name: "Margharita", price: "6.90" },
-                { name: "Palermo", price: "7.90" },
-                { name: "Hawaii", price: "7.90" }
-              ]
+              name: "",
+              products: [{ name: "", price: "" }]
             }
           ]
     )

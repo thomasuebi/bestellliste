@@ -40,10 +40,12 @@ export default function(props) {
 
   return (
     <div className={styles.root}>
-      <AppBar position='static'>
+      <AppBar position='fixed'>
         <Toolbar className={styles.AppBar}>
           <Typography variant='h6'>
-            <img src={logo} className={styles.logo} />
+            <a href={"https://bestellliste.com"}>
+              <img src={logo} className={styles.logo} />
+            </a>
           </Typography>
 
           <PopupState variant='popover' popupId='demo-popup-menu'>
@@ -77,19 +79,36 @@ export default function(props) {
           </PopupState>
         </Toolbar>
       </AppBar>
-      <Container>
+      <Container className={styles.rootContainer}>
         <StyledTabs
           value={value}
           onChange={handleChange}
           aria-label='simple tabs example'>
           <Tab label='Produktliste' {...a11yProps(0)} />
           <Tab label='Bestellungen' {...a11yProps(1)} />
+          <Tab label='Einbinden/Link' {...a11yProps(2)} />
         </StyledTabs>
         <TabPanel value={value} index={0}>
           <ProductList />
         </TabPanel>
         <TabPanel value={value} index={1}>
           Bestellungen
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <FirebaseAuthConsumer>
+            {({ isSignedIn, user, providerId }) => {
+              return (
+                <div>
+                  <h2>Link</h2>
+                  <pre>https://form.bestellliste.com?id={user.uid}</pre>
+                  <h2>Iframe</h2>
+                  <pre>
+                    {`<iframe src=' https://form.bestellliste.com?id={user.uid}'></iframe>`}
+                  </pre>
+                </div>
+              )
+            }}
+          </FirebaseAuthConsumer>
         </TabPanel>
       </Container>
     </div>

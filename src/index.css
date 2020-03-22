@@ -12,7 +12,16 @@ code {
     monospace;
 }
 
+.MuiBox-root {
+  padding: 20px 0 20px 0 !important;
+}
+
 * {
   user-select: none;
   cursor: default;
+}
+
+pre {
+  user-select: text;
+  cursor: text;
 }
