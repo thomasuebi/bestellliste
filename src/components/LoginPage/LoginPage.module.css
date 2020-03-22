@@ -59,3 +59,12 @@
   text-align: center;
   width: 300px;
 }
+
+.textfield {
+  width: calc(100% - 10px);
+  margin: 5px 5px !important;
+}
+
+.hr {
+  margin: 20px;
+}
