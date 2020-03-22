@@ -11,6 +11,7 @@ import { DragIndicator } from "@material-ui/icons"
 import Section from "../Section/Section"
 import Button from "@material-ui/core/Button"
 import firebase, { firestore } from "firebase"
+import { Add } from "@material-ui/icons"
 
 const config = {
   apiKey: "AIzaSyBMRmd0qVwZlNKxddN71lpHAGgOMrt-7wc",
@@ -30,7 +31,11 @@ const db = firebase.firestore()
 export default function(props) {
   const [sections, setSections] = useState([])
 
-  useEffect(async () => {
+  useEffect(() => {
+    gatherFormData()
+  }, [])
+
+  async function gatherFormData() {
     const doc = await db
       .collection("forms")
       .doc(firebase.auth().currentUser.uid)
@@ -53,12 +58,14 @@ export default function(props) {
             }
           ]
     )
-  }, [])
+  }
 
-  const DragHandle = sortableHandle(() => <DragIndicator />)
+  const DragHandle = sortableHandle(() => (
+    <DragIndicator className={styles.dragHandle} />
+  ))
   const SortableItem = sortableElement(({ value, sortIndex }) => {
     return (
-      <form autoComplete='off'>
+      <form autoComplete='off' className={styles.form}>
         <DragHandle />
         <Section
           section={value}
@@ -107,7 +114,7 @@ export default function(props) {
             .set({ data: newSections })
           setSections(newSections)
         }}>
-        Produktgruppe hinzufügen
+        <Add /> Produktgruppe hinzufügen
       </Button>
     </div>
   )

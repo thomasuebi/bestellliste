@@ -1,0 +1,7 @@
+.dragHandle {
+  color: lightgrey;
+  transition: 0.5s;
+}
+.form:hover .dragHandle {
+  color: grey;
+}

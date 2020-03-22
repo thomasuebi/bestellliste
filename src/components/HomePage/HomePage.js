@@ -4,7 +4,6 @@ import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
 import Container from "@material-ui/core/Container"
 import styles from "./HomePage.module.css"
-import TextField from "@material-ui/core/Textfield"
 import { FirebaseAuthConsumer } from "@react-firebase/auth"
 import Button from "@material-ui/core/Button"
 import Menu from "@material-ui/core/Menu"
@@ -18,6 +17,8 @@ import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
 import Box from "@material-ui/core/Box"
 import ProductList from "../ProductList/ProductList"
+import logo from "./logo.png"
+import { makeStyles, withStyles } from "@material-ui/core/styles"
 
 export default function(props) {
   const [value, setValue] = React.useState(0)
@@ -26,11 +27,26 @@ export default function(props) {
     setValue(newValue)
   }
 
+  const StyledTabs = withStyles({
+    indicator: {
+      display: "flex",
+      justifyContent: "center",
+      backgroundColor: "transparent",
+      "& > div": {
+        maxWidth: 70,
+        width: "100%",
+        backgroundColor: "#2C934E"
+      }
+    }
+  })(props => <Tabs {...props} TabIndicatorProps={{ children: <div /> }} />)
+
   return (
     <div className={styles.root}>
       <AppBar position='static'>
         <Toolbar className={styles.AppBar}>
-          <Typography variant='h6'>Bestellliste.com</Typography>
+          <Typography variant='h6'>
+            <img src={logo} className={styles.logo} />
+          </Typography>
 
           <PopupState variant='popover' popupId='demo-popup-menu'>
             {popupState => (
@@ -64,13 +80,13 @@ export default function(props) {
         </Toolbar>
       </AppBar>
       <Container>
-        <Tabs
+        <StyledTabs
           value={value}
           onChange={handleChange}
           aria-label='simple tabs example'>
           <Tab label='Produktliste' {...a11yProps(0)} />
           <Tab label='Bestellungen' {...a11yProps(1)} />
-        </Tabs>
+        </StyledTabs>
         <TabPanel value={value} index={0}>
           <ProductList />
         </TabPanel>

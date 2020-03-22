@@ -48,3 +48,13 @@
 .title {
   font-size: 28px;
 }
+
+.logo {
+  font-weight: 900;
+  height: 38px;
+  margin-top: 10px;
+}
+
+.cardContent {
+  text-align: center;
+}

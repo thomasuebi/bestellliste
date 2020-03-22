@@ -13,6 +13,7 @@ import CardActions from "@material-ui/core/CardActions"
 import CardContent from "@material-ui/core/CardContent"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
+import { Add } from "@material-ui/icons"
 
 export default function(props) {
   const { section, setSection, sectionIndex } = props
@@ -71,7 +72,7 @@ export default function(props) {
             newProducts.push({ name: "", price: "" })
             setSection({ ...section, products: newProducts })
           }}>
-          Produkt hinzufügen
+          <Add /> Produkt hinzufügen
         </Button>
       </CardContent>
     </Card>
