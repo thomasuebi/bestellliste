@@ -103,7 +103,9 @@ export default function(props) {
                   <pre>https://form.bestellliste.com?id={user.uid}</pre>
                   <h2>Iframe</h2>
                   <pre>
-                    {`<iframe src=' https://form.bestellliste.com?id={user.uid}'></iframe>`}
+                    {"<iframe src=' https://form.bestellliste.com?id=" +
+                      user.uid +
+                      "></iframe>"}
                   </pre>
                 </div>
               )

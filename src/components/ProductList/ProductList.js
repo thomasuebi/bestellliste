@@ -86,6 +86,14 @@ export default function(props) {
 
   return (
     <div>
+      <a
+        className={styles.preview}
+        target='_blank'
+        href={
+          "https://form.bestellliste.com?id=" + firebase.auth().currentUser.uid
+        }>
+        Formular aufrufen
+      </a>
       <SortableContainer onSortEnd={onSortEnd} useDragHandle>
         {sections.map((value, index) => (
           <SortableItem

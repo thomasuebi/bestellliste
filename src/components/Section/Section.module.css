@@ -2,6 +2,7 @@
   display: inline-block;
   width: 700px;
   max-width: 88%;
+  margin-top: 10px;
 }
 
 .inputSectionName,

@@ -5,3 +5,8 @@
 .form:hover .dragHandle {
   color: grey;
 }
+
+.preview {
+  margin-left: 30px;
+  margin-bottom: 20px !important;
+}
