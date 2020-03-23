@@ -8,6 +8,7 @@ import {
 } from "react-sortable-hoc"
 import arrayMove from "array-move"
 import { DragIndicator } from "@material-ui/icons"
+import TextField from "@material-ui/core/TextField"
 import Section from "../Section/Section"
 import Button from "@material-ui/core/Button"
 import firebase, { firestore } from "firebase"
@@ -30,7 +31,7 @@ const db = firebase.firestore()
 
 export default function(props) {
   const [sections, setSections] = useState([])
-
+  const [email, setEmail] = useState("")
   useEffect(() => {
     gatherFormData()
   }, [])
@@ -50,6 +51,9 @@ export default function(props) {
             }
           ]
     )
+    doc.data().email && doc.data().email.length > 0
+      ? setEmail(doc.data().email)
+      : setEmail(firebase.auth().currentUser.email)
   }
 
   const DragHandle = sortableHandle(() => (
@@ -67,7 +71,7 @@ export default function(props) {
               newSections[sortIndex] = newSection
               db.collection("forms")
                 .doc(firebase.auth().currentUser.uid)
-                .set({ data: newSections })
+                .set({ data: newSections, email: email })
               return newSections
             })
           }}
@@ -105,17 +109,32 @@ export default function(props) {
         ))}
       </SortableContainer>
       <Button
+        className={styles.addSectionButton}
         color='primary'
         onClick={event => {
           const newSections = [...sections]
           newSections.push({ name: "", products: [] })
           db.collection("forms")
             .doc(firebase.auth().currentUser.uid)
-            .set({ data: newSections })
+            .set({ data: newSections, email: email })
           setSections(newSections)
         }}>
         <Add /> Produktgruppe hinzufügen
       </Button>
+      <br></br>
+      <TextField
+        className={styles.emailField}
+        label='Öffentliche E-Mail-Adresse für Bestellungen'
+        value={email}
+        onChange={event => {
+          setEmail(event.target.value)
+        }}
+        onBlur={event => {
+          db.collection("forms")
+            .doc(firebase.auth().currentUser.uid)
+            .set({ data: sections, email: event.target.value })
+        }}
+      />
     </div>
   )
 }
