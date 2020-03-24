@@ -13,6 +13,7 @@ import Section from "../Section/Section"
 import Button from "@material-ui/core/Button"
 import firebase, { firestore } from "firebase"
 import { Add } from "@material-ui/icons"
+import { FormControlLabel, Checkbox } from "@material-ui/core"
 
 const config = {
   apiKey: "AIzaSyBMRmd0qVwZlNKxddN71lpHAGgOMrt-7wc",
@@ -32,6 +33,11 @@ const db = firebase.firestore()
 export default function(props) {
   const [sections, setSections] = useState([])
   const [email, setEmail] = useState("")
+  const [additionalInfo, setAdditionalInfo] = useState("")
+  const [paymentCash, setPaymentCash] = useState(true)
+  const [paymentInvoice, setPaymentInvoice] = useState(true)
+  const [delivery, setDelivery] = useState(true)
+  const [collection, setCollection] = useState(true)
   useEffect(() => {
     gatherFormData()
   }, [])
@@ -51,6 +57,11 @@ export default function(props) {
             }
           ]
     )
+    setAdditionalInfo(doc.data().additionalInfo)
+    setCollection(doc.data().collection)
+    setDelivery(doc.data().delivery)
+    setPaymentCash(doc.data().paymentCash)
+    setPaymentInvoice(doc.data().paymentInvoice)
     doc.data().email && doc.data().email.length > 0
       ? setEmail(doc.data().email)
       : setEmail(firebase.auth().currentUser.email)
@@ -71,7 +82,15 @@ export default function(props) {
               newSections[sortIndex] = newSection
               db.collection("forms")
                 .doc(firebase.auth().currentUser.uid)
-                .set({ data: newSections, email: email })
+                .set({
+                  data: newSections,
+                  email: email,
+                  additionalInfo: additionalInfo,
+                  paymentCash: paymentCash,
+                  paymentInvoice: paymentInvoice,
+                  delivery: delivery,
+                  collection: collection
+                })
               return newSections
             })
           }}
@@ -116,7 +135,15 @@ export default function(props) {
           newSections.push({ name: "", products: [] })
           db.collection("forms")
             .doc(firebase.auth().currentUser.uid)
-            .set({ data: newSections, email: email })
+            .set({
+              data: newSections,
+              email: email,
+              additionalInfo: additionalInfo,
+              paymentCash: paymentCash,
+              paymentInvoice: paymentInvoice,
+              delivery: delivery,
+              collection: collection
+            })
           setSections(newSections)
         }}>
         <Add /> Produktgruppe hinzufügen
@@ -132,9 +159,124 @@ export default function(props) {
         onBlur={event => {
           db.collection("forms")
             .doc(firebase.auth().currentUser.uid)
-            .set({ data: sections, email: event.target.value })
+            .set({
+              data: sections,
+              additionalInfo: additionalInfo,
+              email: event.target.value,
+              paymentCash: paymentCash,
+              paymentInvoice: paymentInvoice,
+              delivery: delivery,
+              collection: collection
+            })
         }}
       />
+      <br></br>
+      <TextField
+        className={styles.additionalField}
+        label='Zusätzliche Information an den Nutzer'
+        value={additionalInfo}
+        onChange={event => {
+          setAdditionalInfo(event.target.value)
+        }}
+        onBlur={event => {
+          db.collection("forms")
+            .doc(firebase.auth().currentUser.uid)
+            .set({
+              data: sections,
+              email: email,
+              additionalInfo: event.target.value,
+              paymentCash: paymentCash,
+              paymentInvoice: paymentInvoice,
+              delivery: delivery,
+              collection: collection
+            })
+        }}
+      />
+      <div className={styles.options}>
+        <br></br>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={paymentCash}
+              onChange={event => {
+                setPaymentCash(event.target.checked)
+                db.collection("forms")
+                  .doc(firebase.auth().currentUser.uid)
+                  .set({
+                    data: sections,
+                    email: email,
+                    additionalInfo: additionalInfo,
+                    paymentCash: event.target.checked,
+                    paymentInvoice: paymentInvoice,
+                    delivery: delivery,
+                    collection: collection
+                  })
+              }}></Checkbox>
+          }
+          label='Barzahlung erlauben'></FormControlLabel>
+        <br></br>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={paymentInvoice}
+              onChange={event => {
+                setPaymentInvoice(event.target.checked)
+                db.collection("forms")
+                  .doc(firebase.auth().currentUser.uid)
+                  .set({
+                    data: sections,
+                    email: email,
+                    additionalInfo: additionalInfo,
+                    paymentCash: paymentCash,
+                    paymentInvoice: event.target.checked,
+                    delivery: delivery,
+                    collection: collection
+                  })
+              }}></Checkbox>
+          }
+          label='Bezahlung auf Rechnung erlauben'></FormControlLabel>
+        <br></br>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={delivery}
+              onChange={event => {
+                setDelivery(event.target.checked)
+                db.collection("forms")
+                  .doc(firebase.auth().currentUser.uid)
+                  .set({
+                    data: sections,
+                    email: email,
+                    additionalInfo: additionalInfo,
+                    paymentCash: paymentCash,
+                    paymentInvoice: paymentInvoice,
+                    delivery: event.target.checked,
+                    collection: collection
+                  })
+              }}></Checkbox>
+          }
+          label='Zustellung erlauben'></FormControlLabel>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={collection}
+              onChange={event => {
+                setCollection(event.target.checked)
+                db.collection("forms")
+                  .doc(firebase.auth().currentUser.uid)
+                  .set({
+                    data: sections,
+                    email: email,
+                    additionalInfo: additionalInfo,
+                    paymentCash: paymentCash,
+                    paymentInvoice: paymentInvoice,
+                    delivery: delivery,
+                    collection: event.target.checked
+                  })
+              }}></Checkbox>
+          }
+          label='Abholung erlauben'></FormControlLabel>
+      </div>
     </div>
   )
 }

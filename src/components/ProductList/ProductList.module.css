@@ -11,7 +11,8 @@
   margin-bottom: 20px !important;
 }
 
-.emailField {
+.emailField,
+.additionalField {
   width: 500px;
   margin-left: 30px !important;
   margin-top: 20px !important;
@@ -21,4 +22,8 @@
 .addSectionButton {
   margin-left: 30px !important;
   display: flex;
+}
+
+.options {
+  margin-left: 30px !important;
 }
