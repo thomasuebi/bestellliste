@@ -17,6 +17,7 @@ import Box from "@material-ui/core/Box"
 import ProductList from "../ProductList/ProductList"
 import logo from "./logo.png"
 import { withStyles } from "@material-ui/core/styles"
+import OrderList from "../OrderList/OrderList"
 
 export default function(props) {
   const [value, setValue] = React.useState(0)
@@ -92,7 +93,7 @@ export default function(props) {
           <ProductList />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Bestellungen
+          <OrderList />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <FirebaseAuthConsumer>
