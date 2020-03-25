@@ -17,8 +17,15 @@ code {
 }
 
 * {
-  user-select: none;
   cursor: default;
+}
+
+*:not(input) {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 pre {
