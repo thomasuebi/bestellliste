@@ -34,10 +34,10 @@ export default function(props) {
   const [sections, setSections] = useState([])
   const [email, setEmail] = useState("")
   const [additionalInfo, setAdditionalInfo] = useState("")
-  const [paymentCash, setPaymentCash] = useState(true)
-  const [paymentInvoice, setPaymentInvoice] = useState(true)
-  const [delivery, setDelivery] = useState(true)
-  const [collection, setCollection] = useState(true)
+  const [paymentCash, setPaymentCash] = useState("true")
+  const [paymentInvoice, setPaymentInvoice] = useState("true")
+  const [delivery, setDelivery] = useState("true")
+  const [collection, setCollection] = useState("true")
   useEffect(() => {
     gatherFormData()
   }, [])
@@ -57,14 +57,28 @@ export default function(props) {
             }
           ]
     )
-    setAdditionalInfo(doc.data().additionalInfo)
-    setCollection(doc.data().collection)
-    setDelivery(doc.data().delivery)
-    setPaymentCash(doc.data().paymentCash)
-    setPaymentInvoice(doc.data().paymentInvoice)
-    doc.data().email && doc.data().email.length > 0
+    setAdditionalInfo(doc.exists ? doc.data().additionalInfo : "")
+    setCollection(doc.exists ? doc.data().collection : true)
+    setDelivery(doc.exists ? doc.data().delivery : true)
+    setPaymentCash(doc.exists ? doc.data().paymentCash : true)
+    setPaymentInvoice(doc.exists ? doc.data().paymentInvoice : true)
+    doc.exists && doc.data().email && doc.data().email.length > 0
       ? setEmail(doc.data().email)
       : setEmail(firebase.auth().currentUser.email)
+
+    !doc.exists &&
+      db
+        .collection("forms")
+        .doc(firebase.auth().currentUser.uid)
+        .set({
+          data: sections,
+          additionalInfo: additionalInfo,
+          email: email,
+          collection: collection,
+          delivery: delivery,
+          paymentCash: paymentCash,
+          paymentInvoice: paymentInvoice
+        })
   }
 
   const DragHandle = sortableHandle(() => (
@@ -82,14 +96,8 @@ export default function(props) {
               newSections[sortIndex] = newSection
               db.collection("forms")
                 .doc(firebase.auth().currentUser.uid)
-                .set({
-                  data: newSections,
-                  email: email,
-                  additionalInfo: additionalInfo,
-                  paymentCash: paymentCash,
-                  paymentInvoice: paymentInvoice,
-                  delivery: delivery,
-                  collection: collection
+                .update({
+                  data: newSections
                 })
               return newSections
             })
@@ -135,14 +143,8 @@ export default function(props) {
           newSections.push({ name: "", products: [] })
           db.collection("forms")
             .doc(firebase.auth().currentUser.uid)
-            .set({
-              data: newSections,
-              email: email,
-              additionalInfo: additionalInfo,
-              paymentCash: paymentCash,
-              paymentInvoice: paymentInvoice,
-              delivery: delivery,
-              collection: collection
+            .update({
+              data: newSections
             })
           setSections(newSections)
         }}>
@@ -159,14 +161,8 @@ export default function(props) {
         onBlur={event => {
           db.collection("forms")
             .doc(firebase.auth().currentUser.uid)
-            .set({
-              data: sections,
-              additionalInfo: additionalInfo,
-              email: event.target.value,
-              paymentCash: paymentCash,
-              paymentInvoice: paymentInvoice,
-              delivery: delivery,
-              collection: collection
+            .update({
+              email: event.target.value
             })
         }}
       />
@@ -181,14 +177,8 @@ export default function(props) {
         onBlur={event => {
           db.collection("forms")
             .doc(firebase.auth().currentUser.uid)
-            .set({
-              data: sections,
-              email: email,
-              additionalInfo: event.target.value,
-              paymentCash: paymentCash,
-              paymentInvoice: paymentInvoice,
-              delivery: delivery,
-              collection: collection
+            .update({
+              additionalInfo: event.target.value
             })
         }}
       />
@@ -202,14 +192,8 @@ export default function(props) {
                 setPaymentCash(event.target.checked)
                 db.collection("forms")
                   .doc(firebase.auth().currentUser.uid)
-                  .set({
-                    data: sections,
-                    email: email,
-                    additionalInfo: additionalInfo,
-                    paymentCash: event.target.checked,
-                    paymentInvoice: paymentInvoice,
-                    delivery: delivery,
-                    collection: collection
+                  .update({
+                    paymentCash: event.target.checked
                   })
               }}></Checkbox>
           }
@@ -223,14 +207,8 @@ export default function(props) {
                 setPaymentInvoice(event.target.checked)
                 db.collection("forms")
                   .doc(firebase.auth().currentUser.uid)
-                  .set({
-                    data: sections,
-                    email: email,
-                    additionalInfo: additionalInfo,
-                    paymentCash: paymentCash,
-                    paymentInvoice: event.target.checked,
-                    delivery: delivery,
-                    collection: collection
+                  .update({
+                    paymentInvoice: event.target.checked
                   })
               }}></Checkbox>
           }
@@ -244,14 +222,8 @@ export default function(props) {
                 setDelivery(event.target.checked)
                 db.collection("forms")
                   .doc(firebase.auth().currentUser.uid)
-                  .set({
-                    data: sections,
-                    email: email,
-                    additionalInfo: additionalInfo,
-                    paymentCash: paymentCash,
-                    paymentInvoice: paymentInvoice,
-                    delivery: event.target.checked,
-                    collection: collection
+                  .update({
+                    delivery: event.target.checked
                   })
               }}></Checkbox>
           }
@@ -264,13 +236,7 @@ export default function(props) {
                 setCollection(event.target.checked)
                 db.collection("forms")
                   .doc(firebase.auth().currentUser.uid)
-                  .set({
-                    data: sections,
-                    email: email,
-                    additionalInfo: additionalInfo,
-                    paymentCash: paymentCash,
-                    paymentInvoice: paymentInvoice,
-                    delivery: delivery,
+                  .update({
                     collection: event.target.checked
                   })
               }}></Checkbox>
