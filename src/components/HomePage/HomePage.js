@@ -104,9 +104,9 @@ export default function(props) {
                   <pre>https://form.bestellliste.com?id={user.uid}</pre>
                   <h2>Iframe</h2>
                   <pre>
-                    {"<iframe src=' https://form.bestellliste.com?id=" +
+                    {'<div id="Container" style="padding-bottom:56.25%; position:relative; display:block; width: 100%"> <iframe id="ViostreamIframe" width="100%" height="100%" src="https://form.bestellliste.com/?id=' +
                       user.uid +
-                      "></iframe>"}
+                      '" frameborder="0" allowfullscreen="" style="position:absolute; top:0; left: 0"></iframe> </div>'}
                   </pre>
                 </div>
               )
