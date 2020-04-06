@@ -7,12 +7,12 @@ import {
   Table,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
 } from "@material-ui/core"
 
 const db = firebase.firestore()
 
-export default function(props) {
+export default function (props) {
   const [orders, setOrders] = useState([])
 
   useEffect(() => {
@@ -24,15 +24,21 @@ export default function(props) {
     const ordersData = await ordersRef
       .where("formId", "==", firebase.auth().currentUser.uid)
       .get()
-    const newOrders = []
-    ordersData.forEach(orderData => newOrders.push(orderData.data()))
-    ordersData.forEach(orderData => console.log(orderData))
+    let newOrders = []
+    ordersData.forEach((orderData) => newOrders.push(orderData.data()))
+    ordersData.forEach((orderData) => console.log(orderData))
+    newOrders = newOrders
+      .sort((a, b) => {
+        return a.created || 0 - b.created || 0
+      })
+      .reverse()
+    console.log(newOrders)
     setOrders(newOrders)
   }
 
   return (
     <div>
-      {orders.map(order => (
+      {orders.map((order) => (
         <Card className={styles.card}>
           <CardContent>
             <Table>
@@ -42,7 +48,7 @@ export default function(props) {
                     <b>Produkte</b>
                   </TableCell>
                   <TableCell>
-                    {order.data.map(product => {
+                    {order.data.map((product) => {
                       return (
                         <Fragment>
                           {product.stückzahl +
@@ -57,6 +63,20 @@ export default function(props) {
                     })}
                   </TableCell>
                 </TableRow>
+                <TableRow>
+                  <TableCell>
+                    <b>Gesamtpreis</b>
+                  </TableCell>
+                  <TableCell>{order.kontakdaten.gesamtpreis} €</TableCell>
+                </TableRow>
+                {order.kontakdaten.wunsch ? (
+                  <TableRow>
+                    <TableCell>
+                      <b>Wunsch</b>
+                    </TableCell>
+                    <TableCell>{order.kontakdaten.wunsch}</TableCell>
+                  </TableRow>
+                ) : null}
                 <TableRow>
                   <TableCell>
                     <b>Name</b>
@@ -107,6 +127,8 @@ export default function(props) {
                     {order.kontakdaten.zustellung}
                     <br></br>
                     {order.kontakdaten.zahlung}
+                    <br></br>
+                    {order.kontakdaten.anmerkung}
                   </TableCell>
                 </TableRow>
               </TableBody>
